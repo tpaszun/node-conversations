@@ -3,10 +3,6 @@ var router = express.Router();
 
 var conversation = require('../../../src/conversation');
 
-router.get('/', (req, res) => {
-  res.send('test...');
-});
-
 var bookCar = conversation('/book-car')
   .step('pickup-location', () => {})
   .step('car-selection', () => {})
