@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+
+    span.conversation-nav
+        a(href='/book-car/' + conversation._id + '/pickup-location') Pickup location
+    span.conversation-nav
+        a(href='/book-car/' + conversation._id + '/car-selection') Car selection
+    span.conversation-nav
+        a(href='/book-car/' + conversation._id + '/rent-date') Rent date
+    span.conversation-nav
+        a(href='/book-car/' + conversation._id + '/leaving-location') Leaving location
+
+    block step

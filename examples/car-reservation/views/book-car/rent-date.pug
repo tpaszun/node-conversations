@@ -1,0 +1,24 @@
+extends layout
+
+block step
+  - var from = stepData !== undefined ? stepData.from : '2018-01-15'
+  - var to = stepData !== undefined ? stepData.to : '2018-01-18'
+
+  h1 Rent date
+
+  form(method='POST')
+    label(for='from') Od:
+    input(
+        type='date'
+        name='from'
+        value=from
+    )
+    br
+    label(for='to') Do:
+    input(
+        type='date'
+        name='to'
+        value=to
+    )
+    br
+    input(type='submit', value='Dalej')
