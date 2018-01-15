@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title} example page
+
+  a(href='/book-car') Book a new car
+
+  p Bookings:
+
+  ul
+    each booking in bookings
+      li
+        div Car: #{booking.car}
+        div Pickup location: #{booking.pickup}
+        div Rental date: #{booking.from} - #{booking.to}
+        div Leaving location: #{booking.leaving}
+
+  h2 Open conversations:
+
+  ul
+    each conversation in conversations
+      li #{conversation._id} #{conversation._expires}
+

@@ -1,0 +1,15 @@
+extends layout
+
+block step
+  - var cars = [ 'Toyota Yaris', 'BMW 7', 'Opel Astra', 'Fiat 126p', 'Seat Toledo' ];
+
+  h1 Car selection
+
+  form(method='POST')
+    select(name='car')
+      each car in cars
+        option(
+            value=car
+            selected=stepData !== undefined && stepData.car === car
+        ) #{car}
+    input(type='submit', value='Dalej')

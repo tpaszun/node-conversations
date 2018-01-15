@@ -1,0 +1,102 @@
+<!--source: https://www.youtube.com/watch?v=4HuAnM6b2d8 -->
+
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+    <title>Handlebars_title</title>
+    <style type="text/css">
+        .redText {color:red}
+        .blueText {color:blue}
+        .greenText {color:green}
+    </style>
+    <script src="../../node_modules/handlebars/dist/handlebars.js"></script>
+</HEAD>
+<BODY>
+<div id="Jacks_data"></div>
+
+<script type="text/javascript">
+    var myInfo = "<p>Paragraph1: name = {{name}}, city = {{city}}</p>";
+
+    var template = Handlebars.compile(myInfo);
+
+    var data = template({name:"Jack", city: "London"});
+
+    document.getElementById("Jacks_data").innerHTML += data;
+</script>
+
+
+<div id="quoteDataDiv"></div>
+
+<script id="myQuote_template" type="text/x-handlebars-template">
+    <h3>Fav {{name}} QUOTES</h3>
+    <ol>
+        {{#each quotes}}
+        <li>{{quote}}</li>
+        {{/each}}
+    </ol>
+
+    {{{yogiBio}}} <br/><br/>
+
+    {{makeALink "Yogi Link to The Link" "http://localhost/yogislink_makealink"}} </br>
+    {{changeColor "make my text red" color="green_txt"}} </br>
+    {{sayHello}} </br>
+</script>
+
+<script type="text/javascript">
+
+    var quoteInfo = document.getElementById("myQuote_template").innerHTML;
+
+    var template = Handlebars.compile(quoteInfo);
+
+    Handlebars.registerHelper("makeALink", function(text, url){
+        text = Handlebars.Utils.escapeExpression(text);
+        url = Handlebars.Utils.escapeExpression(url);
+
+        var link = '<a href="' + url + '">' + text + '</a>';
+
+        return new Handlebars.SafeString(link);
+    });
+
+    Handlebars.registerHelper("changeColor", function(text, options){
+        text = Handlebars.Utils.escapeExpression(text);
+        if(options.hash.color === "red_txt") {
+            return new Handlebars.SafeString("<span class='redText'>" + text +"</span>");
+        } else if(options.hash.color === "blue_txt") {
+            return new Handlebars.SafeString("<span class='blueText'>" + text +"</span>");
+        } else if(options.hash.color === "green_txt") {
+            return new Handlebars.SafeString("<span class='greenText'>" + text +"</span>");
+        }
+    });
+
+    Handlebars.registerHelper("sayHello", function(options){
+        switch(options.data.myLanguage){
+            case "spanish":
+                return "Hola";
+                break;
+            case "polish":
+                return "Witaj";
+                break;
+            default:
+                return "Hello";
+        }
+    });
+
+    var quoteData = template({
+        name:"Yogi",
+        quotes: [
+            {quote: "quote1"},
+            {quote: "quote2"},
+            {quote: "the real quote3"}
+        ],
+        yogiBio: '<i>Yogi\'s bio in italic<\i>'
+    }, { data:{
+        myLanguage: "polish"
+    } }
+    );
+
+    document.getElementById("quoteDataDiv").innerHTML+=quoteData;
+
+</script>
+
+</BODY>
+</HTML>

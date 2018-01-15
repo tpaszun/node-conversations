@@ -1,0 +1,15 @@
+extends layout
+
+block step
+  - var locations = [ 'Warszawa', 'Kraków', 'Gdańsk', 'Wrocław', 'Łódź' ]
+
+  h1 Pickup location
+
+  form(method='POST')
+    select(name='pickup-place')
+      each location in locations
+        option(
+          value = location
+          selected = stepData !== undefined && stepData['pickup-place'] === location
+        ) #{location}
+    input(type='submit', value='Dalej')

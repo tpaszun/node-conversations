@@ -1,0 +1,12 @@
+extends layout
+
+block step
+  h1 Accept
+
+  div Car: #{conversation['car-selection'].car}
+  div Pickup location: #{conversation['pickup-location']['pickup-place']}
+  div Rental date: #{conversation['rent-date'].from} - #{conversation['rent-date'].to}
+  div Leaving location: #{conversation['leaving-location']['leaving-place']}
+
+  form(method='POST')
+    input(type='submit', value='Accept')
