@@ -41,7 +41,9 @@ function makeApp()
                 return req.session.put(key, value)
             }
         }
-        ConversationScope.run(req, res, next, config)
+        new ConversationScope(req, res, config);
+
+        next();
     })
 
     app.get('/', function (req, res, next) {
