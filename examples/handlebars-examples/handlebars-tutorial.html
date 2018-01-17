@@ -1,0 +1,225 @@
+<!--source: https://www.youtube.com/watch?v=4HuAnM6b2d8 -->
+
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+    <title>Handlebars_title</title>
+    <style type="text/css">
+        .redText {color:red}
+        .blueText {color:blue}
+        .greenText {color:green}
+    </style>
+    <script src="node_modules/handlebars/dist/handlebars.js"></script>
+</HEAD>
+<BODY>
+<div id="Jacks_data">[DIV] Jack's Data</div>
+
+<script type="text/javascript">
+    var myInfo = "<p>Paragraph1: name = {{name}}, city = {{city}}</p>";
+
+    var template = Handlebars.compile(myInfo);
+
+    var data = template({name:"Jack", city: "London"});
+
+    document.getElementById("Jacks_data").innerHTML += data;
+</script>
+
+
+<div id="quoteDataDiv">[DIV] Quote Data</div>
+
+<script id="myQuote_template" type="text/x-handlebars-template">
+    <h3>Fav {{name}} QUOTES</h3>
+    <ol>
+        {{#each quotes}}
+        <li>{{quote}}</li>
+        {{/each}}
+    </ol>
+
+    {{{yogiBio}}} <br/><br/>
+
+    {{makeALink "Yogi Link to The Link" "http://localhost/yogislink_makealink"}} </br>
+    {{changeColor "make my text red" color="green_txt"}} </br>
+    {{sayHello}} </br>
+</script>
+
+<script type="text/javascript">
+    var quoteInfo = document.getElementById("myQuote_template").innerHTML;
+
+    var template = Handlebars.compile(quoteInfo);
+
+    Handlebars.registerHelper("makeALink", function(text, url)
+    {
+        text = Handlebars.Utils.escapeExpression(text);
+        url = Handlebars.Utils.escapeExpression(url);
+
+        var link = '<a href="' + url + '">' + text + '</a>';
+
+        return new Handlebars.SafeString(link);
+    });
+
+    Handlebars.registerHelper("changeColor", function(text, options)
+    {
+        text = Handlebars.Utils.escapeExpression(text);
+        if(options.hash.color === "red_txt")
+        {
+            return new Handlebars.SafeString("<span class='redText'>" + text +"</span>");
+        }
+        else if(options.hash.color === "blue_txt")
+            {
+                return new Handlebars.SafeString("<span class='blueText'>" + text +"</span>");
+            }
+            else if(options.hash.color === "green_txt")
+                {
+                    return new Handlebars.SafeString("<span class='greenText'>" + text +"</span>");
+                }
+    });
+
+    Handlebars.registerHelper("sayHello", function(options)
+    {
+        switch(options.data.myLanguage)
+        {
+            case "spanish":
+                return "Hola";
+                break;
+            case "polish":
+                return "Witaj";
+                break;
+            default:
+                return "Hello";
+        }
+    });
+
+    var quoteData = template(
+        {
+            name:"Yogi",
+            quotes: [
+                {quote: "quote1"},
+                {quote: "quote2"},
+                {quote: "the real quote3"}
+            ],
+            yogiBio: '<i>Yogi\'s bio in italic<\i>'
+        },
+        {
+            data:
+            {myLanguage: "polish"}
+        }
+    );
+
+    document.getElementById("quoteDataDiv").innerHTML += quoteData;
+</script>
+
+<div id="blockHelpersDiv"><br/>[DIV] blockHelpers<br/></div>
+
+<script id="blockHelpersTemplate" type="text/x-handlebars-template">
+    {{#makeRadioBlockhelper "size_name"}}
+        Small_opt
+        Medium_opt
+        Large_opt
+    {{/makeRadioBlockhelper}}
+
+    {{#areEqual 1 1}}
+        Numbers are equal
+    {{else}}
+        Number are NOT equal
+    {{/areEqual}} <br/>
+
+    {{#areEqual 1 2}}
+        Numbers are equal
+    {{else}}
+        Number are NOT equal
+    {{/areEqual}} <br/>
+
+    {{#if true}}
+        TRUE
+    {{else}}
+        FALSE
+    {{/if}} <br/>
+
+    {{#if "true"}}
+        TRUE
+    {{else}}
+        FALSE
+    {{/if}} <br/>
+</script>
+
+<script type="text/javascript">
+    templateInfo = document.getElementById("blockHelpersTemplate").innerHTML;
+    var template = Handlebars.compile(templateInfo);
+
+    Handlebars.registerHelper("makeRadioBlockhelper", function(name, options){
+        var radioList = options.fn();
+
+        radioList = radioList.trim().replace("_opt","").split("\n");
+
+        var output = "";
+        for(var iter in radioList) {
+            var element = radioList[iter].trim().replace("_opt","");
+
+            output += '<input type = "radio" name="' + name.replace("_name","") + '" value="' + element + '"> ' + element + '<br/>';
+        }
+
+        return output;
+    });
+
+    Handlebars.registerHelper("areEqual", function(num1, num2, options) {
+        if( num1 === num2 )
+        {
+            return options.fn(this);
+        }
+        else
+        {
+            return options.inverse(this);
+        }
+    });
+
+    Handlebars.registerHelper("if", function(data, options) {
+        if( data || data.toUpperCase() === "TRUE" )
+        {
+            return options.fn(this);
+        }
+        else
+        {
+            return options.inverse(this);
+        }
+    });
+
+    var templateData = template({});
+    document.getElementById("blockHelpersDiv").innerHTML += templateData;
+</script>
+
+<div id="theTemplateDiv">[DIV] theTemplateDiv</div>
+
+<script id="theTemplate" type="text/x-handlebars-template">
+    <div class="Potter1">
+        <h3>{{title}}</h3>
+        {{#with techData}}
+            <div class="isbnDiv">{{isbn}}</div>
+            <div class="authorDiv">{{author}}</div>
+        {{/with}}
+    </div>
+</script>
+
+<script id="" type="text/javascript">
+    templateInfo = document.getElementById("theTemplate").innerHTML;
+    var template = Handlebars.compile(templateInfo);
+
+    var templateData = template(
+        {
+            title: "Harry Pottah",
+            techData:
+            {
+                isbn: "0-7475-3269-9",
+                author: "J.K. Rowling"
+            }
+        }
+    );
+
+    Handlebars.registerHelper("with", function(context, options){
+        return options.fn(context);
+    });
+
+    document.getElementById("theTemplateDiv").innerHTML += templateData;
+</script>
+
+</BODY>
+</HTML>
